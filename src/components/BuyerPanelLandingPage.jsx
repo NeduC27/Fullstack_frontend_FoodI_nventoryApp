@@ -304,12 +304,18 @@ export default function BuyerPanelLandingPage({ items, categories, fetchItems, f
                     }
                 }
 
-                @media (max-width: 480px) {
-                    .buyer-hero h1 { font-size: 1.4rem; }
-                    .products-grid {
-                        grid-template-columns: repeat(2, 1fr);
-                    }
+              @media (max-width: 480px) {
+                .modal-content {
+                    width: 92% !important;
+                    max-height: 85vh;
+                    overflow-y: auto;
+                    border-radius: 14px;
                 }
+                .modal-overlay {
+                    padding: 1rem;
+                    align-items: center;
+                }
+                
             `}</style>
 
             <div className="buyer-page">
@@ -402,52 +408,43 @@ export default function BuyerPanelLandingPage({ items, categories, fetchItems, f
                 )}
 
                 {/* Mobile: cart bottom sheet */}
-                {showCart && (
-                    <div className="cart-mobile-overlay" onClick={() => setShowCart(false)}>
-                        <div className="cart-mobile-sheet" onClick={(e) => e.stopPropagation()}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                <span style={{ fontWeight: 700, fontSize: '1rem' }}>Your Order</span>
-                                <button onClick={() => setShowCart(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                                    <X size={20} />
-                                </button>
-                            </div>
-                            <CartContent />
-                        </div>
-                    </div>
-                )}
-
-                {/* Product Detail Modal */}
                 {selectedItemDetails && (
                     <div className="modal-overlay" onClick={() => setSelectedItemDetails(null)}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div
+                            className="modal-content"
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ width: '90%', maxWidth: '28rem', margin: '0 auto' }}
+                        >
                             <div className="modal-header">
-                                <h3>Product Details</h3>
+                                <h3 style={{ fontSize: '1rem' }}>Product Details</h3>
                                 <button className="modal-close-btn" onClick={() => setSelectedItemDetails(null)}>
                                     <X size={18} />
                                 </button>
                             </div>
-                            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem' }}>
                                 <img
                                     src={selectedItemDetails.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=500'}
                                     alt={selectedItemDetails.name}
-                                    style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '12px' }}
+                                    style={{ width: '100%', height: '10rem', objectFit: 'cover', borderRadius: '10px' }}
                                 />
                                 <div>
-                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 800 }}>{selectedItemDetails.name}</h2>
-                                    <span style={{ fontSize: '0.8rem', color: '#666' }}>SKU: {selectedItemDetails.sku}</span>
+                                    <h2 style={{ fontSize: '1rem', fontWeight: 800 }}>{selectedItemDetails.name}</h2>
+                                    <span style={{ fontSize: '0.75rem', color: '#666' }}>SKU: {selectedItemDetails.sku}</span>
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #eee' }}>
                                     <div>
-                                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#666' }}>Sales Price</span>
-                                        <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-color)' }}>₦{selectedItemDetails.salesPrice.toFixed(2)}</p>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#666' }}>Sales Price</span>
+                                        <p style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--primary-color)' }}>
+                                            ₦{selectedItemDetails.salesPrice.toFixed(2)}
+                                        </p>
                                     </div>
                                     <div>
-                                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#666' }}>Stock</span>
-                                        <p style={{ fontSize: '1.15rem', fontWeight: 700 }}>{selectedItemDetails.quantity} units</p>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#666' }}>Stock</span>
+                                        <p style={{ fontSize: '1rem', fontWeight: 700 }}>{selectedItemDetails.quantity} units</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="modal-footer">
+                            <div className="modal-footer" style={{ padding: '0.75rem 1rem' }}>
                                 <button className="btn-secondary" onClick={() => setSelectedItemDetails(null)}>Close</button>
                                 {selectedItemDetails.quantity > 0 && (
                                     <button className="admin-action-btn" onClick={() => { addToCart(selectedItemDetails); setSelectedItemDetails(null); }}>
